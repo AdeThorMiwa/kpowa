@@ -23,7 +23,12 @@ const AuthPage: Component = () => {
           onInput={onInputHandler}
           error={error}
         />
-        <Button text="Continue" class="self-end" loading={loading} />
+        <Button
+          type="submit"
+          text="Continue"
+          class="self-end"
+          loading={loading}
+        />
       </form>
     </section>
   );

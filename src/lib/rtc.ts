@@ -2,7 +2,9 @@ import { SDP } from "../types/rtc";
 
 class RTC {
   public async getNewSDP(): Promise<SDP> {
-    return "";
+    return new Promise((res, rej) => {
+      setTimeout(() => res(""), 4000);
+    });
   }
 }
 
