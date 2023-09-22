@@ -1,15 +1,13 @@
 import { createSignal } from "solid-js";
 import RTC from "../lib/rtc";
 import { useAuthState } from "../state/auth";
-import { useNavigate } from "@solidjs/router";
+import { User } from "../types/user";
 
 const useAuthForm = () => {
   const { authenticate } = useAuthState();
   const [username, setUsername] = createSignal<string>();
   const [loading, setLoading] = createSignal(false);
   const [error, setError] = createSignal<string>();
-
-  const navigate = useNavigate();
 
   const onInputHandler = (
     e: InputEvent & {
@@ -31,7 +29,12 @@ const useAuthForm = () => {
       };
 
       // make request and authenticate
-      authenticate(username()!);
+      const user: User = {
+        username: username()!,
+        inviteCode: username()?.slice(0, 3) + "0465",
+        referrals: 10,
+      };
+      authenticate(user);
     } catch (e) {
     } finally {
       setLoading(false);

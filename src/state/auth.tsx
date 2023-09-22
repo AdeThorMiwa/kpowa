@@ -6,17 +6,18 @@ import {
   useContext,
 } from "solid-js";
 import { AuthContextProps } from "../types/auth";
+import { User } from "../types/user";
 
 const AuthContext = createContext<AuthContextProps>();
 
 const AuthProvider: ParentComponent = (props) => {
-  const [username, setUsername] = createSignal<string>();
-  const authenticated = createMemo(() => username() !== undefined);
+  const [user, setUser] = createSignal<User>();
+  const authenticated = createMemo(() => user() !== undefined);
 
   const values = createMemo<AuthContextProps>(() => ({
-    username,
+    user,
     authenticated,
-    authenticate: (username: string) => setUsername(username),
+    authenticate: (user: User) => setUser(user),
   }));
 
   return (

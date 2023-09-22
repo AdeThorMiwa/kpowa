@@ -1,7 +1,8 @@
 import { Accessor } from "solid-js";
+import { User } from "./user";
 
 export interface AuthContextProps {
-  username: Accessor<string | undefined>;
+  user: Accessor<User | undefined>;
   authenticated: Accessor<boolean>;
-  authenticate: (username: string) => void;
+  authenticate: (user: User) => void;
 }
