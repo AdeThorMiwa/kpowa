@@ -1,6 +1,6 @@
-import Copiable from "../../components/Copiable";
-import Input from "../../components/Input";
+import Search from "../../components/Search";
 import UserInfo from "../../components/UserInfo";
+import UserList from "../../components/UserList";
 import BaseLayout from "../../layouts/BaseLayout";
 
 const HomePage = () => {
@@ -8,9 +8,8 @@ const HomePage = () => {
     <BaseLayout>
       <section class="mt-4">
         <UserInfo />
-        <form class="mt-4">
-          <Input type="search" placeholder="Search username.." />
-        </form>
+        <Search />
+        <UserList />
       </section>
     </BaseLayout>
   );

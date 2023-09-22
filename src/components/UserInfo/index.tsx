@@ -14,7 +14,7 @@ const UserInfo = () => {
           Number of referrals: <b class="text-lg text-blue-800">55</b>
         </h4>
         <h4 class="text-sm">
-          Invite Code: <Copiable text="Jon2353" />
+          Invite Code: <Copiable text="Jon2353" class="text-lg" />
         </h4>
       </div>
     </div>

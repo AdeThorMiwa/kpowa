@@ -1,11 +1,13 @@
 import { Component, createSignal } from "solid-js";
+import cn from "classnames";
 
 type CopiableProps = {
   text: string;
   copyValue?: string;
+  class?: string;
 };
 
-const Copiable: Component<CopiableProps> = ({ text, copyValue }) => {
+const Copiable: Component<CopiableProps> = ({ text, copyValue, ...rest }) => {
   const [copied, setCopied] = createSignal(false);
 
   const onCopyHandler = () => {
@@ -19,8 +21,10 @@ const Copiable: Component<CopiableProps> = ({ text, copyValue }) => {
   };
 
   return (
-    <span>
-      <b class="text-lg text-blue-800">{copied() ? "Copied" : text}</b>{" "}
+    <span class="inline-flex">
+      <b class={cn("text-blue-800", rest.class)}>
+        {copied() ? "Copied" : text}
+      </b>{" "}
       <button onClick={onCopyHandler}>
         <img
           srcset="https://img.icons8.com/?size=24&amp;id=pNYOTp5DinZ3&amp;format=png 1x, https://img.icons8.com/?size=48&amp;id=pNYOTp5DinZ3&amp;format=png 2x"
