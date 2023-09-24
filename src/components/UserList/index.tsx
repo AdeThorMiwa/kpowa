@@ -2,71 +2,66 @@ import { TransitionGroup } from "solid-transition-group";
 import {
   Component,
   For,
-  Match,
-  Show,
-  Switch,
-  createEffect,
+  Suspense,
+  createResource,
   createSignal,
-  onCleanup,
 } from "solid-js";
 import UserListItem from "../UserListItem";
 import Search from "../Search";
 import { getUsers } from "../../lib/api";
-import { createQuery } from "@tanstack/solid-query";
-import { useAuthState } from "../../state/auth";
 import Loader from "../Loader";
+import Button from "../Button";
 
 const UserList: Component = () => {
-  const { authenticated } = useAuthState();
   const [username, setUsername] = createSignal("");
   const [page, setPage] = createSignal(1);
 
-  const query = createQuery(
-    () => [`users`, username(), page()],
-    () => getUsers({ username: username(), page: page() }),
-    {
-      keepPreviousData: true,
-      get enabled() {
-        return authenticated();
-      },
-    }
+  const [res, { mutate, refetch }] = createResource(
+    () => ({ username: username(), page: page() }),
+    getUsers
   );
 
-  createEffect(() => {
-    let listener = (e: Event) => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        if (query.data?.hasNext && !query.isFetching) setPage(page() + 1);
-      }
-    };
-
-    window.addEventListener("scroll", listener);
-    onCleanup(() => window.removeEventListener("scroll", listener));
-  });
+  const canNext = () => res()?.hasNext;
+  const canPrev = () => res()?.hasPrev;
 
   const onSumbitHandler = (value: string) => {
     setUsername(value);
+    setPage(1);
   };
+
+  const ListLoader = () => (
+    <div class="text-blue-800 flex w-full justify-center my-5">
+      <Loader />
+    </div>
+  );
 
   return (
     <>
       <Search onSubmit={onSumbitHandler} />
       <section class="mt-8 w-full mb-6">
         <h3 class="text-lg">Users</h3>
-        <Switch>
-          <Match when={query.isError}>Error: {query.error as string}</Match>
-          <Match when={query.isSuccess || query.isFetching}>
-            <TransitionGroup name="list-item">
-              <For each={query.data?.users}>
-                {(user) => <UserListItem {...user} />}
-              </For>
-            </TransitionGroup>
-            <Show when={query.isFetching}>
-              <div class="text-blue-800 flex w-full justify-center my-5">
-                <Loader />
-              </div>
-            </Show>
-          </Match>
-        </Switch>
+
+        <Suspense fallback={<ListLoader />}>
+          <TransitionGroup name="list-item">
+            <For each={res()?.users}>
+              {(user) => <UserListItem {...user} />}
+            </For>
+          </TransitionGroup>
+          <div class="flex mt-8">
+            <Button
+              disabled={!canPrev()}
+              onClick={() => setPage(page() - 1)}
+              text="Prev"
+              class="w-[100px]"
+            />
+            <Button
+              disabled={!canNext()}
+              onClick={() => setPage(page() + 1)}
+              text="Next"
+              class="w-[100px] ml-5"
+            />
+          </div>
+        </Suspense>
       </section>
     </>
   );

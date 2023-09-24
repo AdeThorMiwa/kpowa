@@ -7,19 +7,22 @@ type ButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> & {
   loading?: Accessor<boolean>;
 };
 
-const Button: Component<ButtonProps> = ({ text, ...rest }) => {
-  const loading = createMemo(() => (rest.loading ? rest.loading() : false));
+const Button: Component<ButtonProps> = (props) => {
+  const loading = () => (props.loading ? props.loading() : false);
 
   return (
     <button
-      {...rest}
+      {...props}
       class={cn(
         "w-full bg-blue-800 border-none mt-2 text-white px-3 py-1.5 text-sm h-[34px] flex justify-center items-center",
-        rest.class
+        props.class,
+        {
+          "cursor-not-allowed opacity-50": props.disabled,
+        }
       )}
-      disabled={rest.disabled || loading()}
+      disabled={props.disabled || loading()}
     >
-      {loading() ? <Loader /> : text}
+      {loading() ? <Loader /> : props.text}
     </button>
   );
 };
