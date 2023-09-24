@@ -2,17 +2,19 @@ import { Component, createSignal } from "solid-js";
 import cn from "classnames";
 
 type CopiableProps = {
-  text: string;
+  text: string | undefined;
   copyValue?: string;
   class?: string;
 };
 
-const Copiable: Component<CopiableProps> = ({ text, copyValue, ...rest }) => {
+const Copiable: Component<CopiableProps> = (props) => {
   const [copied, setCopied] = createSignal(false);
+  const copyValue = () => props.copyValue || props.text || "";
+  const text = () => props.text;
 
   const onCopyHandler = () => {
     navigator.clipboard
-      .writeText(copyValue || text)
+      .writeText(copyValue())
       .then(() => {
         setCopied(true);
         setTimeout(() => setCopied(false), 600);
@@ -22,8 +24,8 @@ const Copiable: Component<CopiableProps> = ({ text, copyValue, ...rest }) => {
 
   return (
     <span class="inline-flex">
-      <b class={cn("text-blue-800", rest.class)}>
-        {copied() ? "Copied" : text}
+      <b class={cn("text-blue-800", props.class)}>
+        {copied() ? "Copied" : text()}
       </b>{" "}
       <button onClick={onCopyHandler}>
         <img

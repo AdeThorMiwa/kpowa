@@ -687,6 +687,18 @@
   resolved "https://registry.yarnpkg.com/@solidjs/router/-/router-0.8.3.tgz#4623cda699c4f47b3520222529b72e3cb77ec415"
   integrity sha512-oJuqQo10rVTiQYhe1qXIG1NyZIZ2YOwHnlLc8Xx+g/iJhFCJo1saLOIrD/Dkh2fpIaIny5ZMkz1cYYqoTYGJbg==
 
+"@tanstack/query-core@4.35.3":
+  version "4.35.3"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.35.3.tgz#1c127e66b4ad1beeac052db83a812d7cb67369e1"
+  integrity sha512-PS+WEjd9wzKTyNjjQymvcOe1yg8f3wYc6mD+vb6CKyZAKvu4sIJwryfqfBULITKCla7P9C4l5e9RXePHvZOZeQ==
+
+"@tanstack/solid-query@^4.35.3":
+  version "4.35.3"
+  resolved "https://registry.yarnpkg.com/@tanstack/solid-query/-/solid-query-4.35.3.tgz#0a64c3ff5d5dbef903e0e1bb015b7e48cadc8a0a"
+  integrity sha512-RQvUjWJgg1vyuPVMEqshM/ZBzA3ZgDynyQppc3vXW/OWJ+PaOMpCbgZAiBP2ROuk0Ag8xxeGMBuEJ7ESUjCCgg==
+  dependencies:
+    "@tanstack/query-core" "4.35.3"
+
 "@types/babel__core@^7.1.20":
   version "7.20.2"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.20.2.tgz#215db4f4a35d710256579784a548907237728756"
@@ -719,11 +731,6 @@
   integrity sha512-ojlGK1Hsfce93J0+kn3H5R73elidKUaZonirN33GSmgTUMpzI/MIFfSpF3haANe3G1bEBS9/9/QEqwTzwqFsKw==
   dependencies:
     "@babel/types" "^7.20.7"
-
-"@types/eventsource@^1.1.12":
-  version "1.1.12"
-  resolved "https://registry.yarnpkg.com/@types/eventsource/-/eventsource-1.1.12.tgz#ceed409a2a19ef8ecb44545d9546f74dc448f426"
-  integrity sha512-KlVguyxdoO8VkAhOMwOemK+NhFAg0gOwJHgimrWJUgM6LrdVW2nLa+d47WVWQcs8feRn0eeP+5yUDmDfzLBjRA==
 
 "@types/json-schema@^7.0.12":
   version "7.0.13"

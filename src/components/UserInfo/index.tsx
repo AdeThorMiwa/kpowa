@@ -18,8 +18,7 @@ const UserInfo = () => {
           <b class="text-lg text-blue-800">{user()?.referrals}</b>
         </h4>
         <h4 class="text-sm">
-          Invite Code:{" "}
-          <Copiable text={user()?.inviteCode + ""} class="text-lg" />
+          Invite Code: <Copiable text={user()?.inviteCode} class="text-lg" />
         </h4>
       </div>
     </div>

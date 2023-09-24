@@ -1,8 +1,15 @@
 import { TransitionGroup } from "solid-transition-group";
-import { Component, For, createEffect, createSignal } from "solid-js";
+import {
+  Component,
+  For,
+  createEffect,
+  createResource,
+  createSignal,
+} from "solid-js";
 import UserListItem from "../UserListItem";
 import { User } from "../../types/user";
 import Search from "../Search";
+import { getUsers } from "../../lib/api";
 
 const UserList: Component = () => {
   const [numList, setNumList] = createSignal<User[]>([
@@ -17,6 +24,10 @@ const UserList: Component = () => {
       referrals: 20,
     },
   ]);
+
+  const [users] = createResource(getUsers);
+
+  createEffect(() => console.log(users()));
 
   const onSearchHandler = (searchQuery: string) => {
     console.log("query is: ", searchQuery);
