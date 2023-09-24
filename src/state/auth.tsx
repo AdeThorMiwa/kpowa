@@ -1,23 +1,48 @@
 import {
   ParentComponent,
   createContext,
+  createEffect,
   createMemo,
+  createResource,
   createSignal,
   useContext,
 } from "solid-js";
-import { AuthContextProps } from "../types/auth";
-import { User } from "../types/user";
+import { AuthContextProps, AuthToken } from "../types/auth";
+import EventManager from "../lib/eventManager";
+import { getAuthenticatedUser } from "../lib/api";
+import { makePersisted } from "@solid-primitives/storage";
+import { AUTH_STORAGE_KEY, AUTH_STORAGE_TYPE } from "../constants/auth";
 
 const AuthContext = createContext<AuthContextProps>();
 
+const fetchUser = async (token: AuthToken) => {
+  if (!token) return;
+
+  return await getAuthenticatedUser();
+};
+
 const AuthProvider: ParentComponent = (props) => {
-  const [user, setUser] = createSignal<User>();
-  const authenticated = createMemo(() => user() !== undefined);
+  const [authToken, setAuthToken] = makePersisted(createSignal<AuthToken>(), {
+    name: AUTH_STORAGE_KEY,
+    storage: AUTH_STORAGE_TYPE,
+  });
+  const authenticated = createMemo(() => authToken() !== undefined);
+  const [user] = createResource(authToken, fetchUser);
+
+  createEffect(() => {
+    if (authToken()) {
+      EventManager.init(authToken());
+    }
+  });
+
+  const authenticate = (token: AuthToken) => {
+    setAuthToken(token);
+  };
 
   const values = createMemo<AuthContextProps>(() => ({
     user,
     authenticated,
-    authenticate: (user: User) => setUser(user),
+    authenticate,
   }));
 
   return (

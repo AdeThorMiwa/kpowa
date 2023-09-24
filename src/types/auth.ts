@@ -4,5 +4,7 @@ import { User } from "./user";
 export interface AuthContextProps {
   user: Accessor<User | undefined>;
   authenticated: Accessor<boolean>;
-  authenticate: (user: User) => void;
+  authenticate: (token: AuthToken) => void;
 }
+
+export type AuthToken = String | undefined;

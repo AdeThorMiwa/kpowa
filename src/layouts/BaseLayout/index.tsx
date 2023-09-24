@@ -1,12 +1,15 @@
-import { ParentComponent } from "solid-js";
+import { ParentComponent, Suspense } from "solid-js";
 import PageHeader from "../../components/Header";
+import PageLoader from "../../components/PageLoader";
 
 const BaseLayout: ParentComponent = (props) => {
   return (
-    <main class="w-full max-w-xl mx-auto p-4">
-      <PageHeader />
-      {props.children}
-    </main>
+    <Suspense fallback={<PageLoader />}>
+      <main class="w-full max-w-xl mx-auto p-4">
+        <PageHeader />
+        {props.children}
+      </main>
+    </Suspense>
   );
 };
 

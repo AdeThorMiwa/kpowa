@@ -19,7 +19,7 @@ const UserInfo = () => {
         </h4>
         <h4 class="text-sm">
           Invite Code:{" "}
-          <Copiable text={user()?.inviteCode ?? 0 + ""} class="text-lg" />
+          <Copiable text={user()?.inviteCode + ""} class="text-lg" />
         </h4>
       </div>
     </div>

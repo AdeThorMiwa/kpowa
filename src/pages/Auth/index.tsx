@@ -12,7 +12,7 @@ const AuthPage: Component = () => {
       <h1 class="text-2xl font-bold">
         Kill<span class="text-blue-800">powa</span> Server
       </h1>
-      <h4 class="mt-2">Register or login into our server.</h4>
+      <h4 class="mt-2">Register or login to get access to our server.</h4>
       <form onSubmit={onFormSubmit} class="mt-5 w-full max-w-sm flex flex-col">
         <Input
           type="text"

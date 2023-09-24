@@ -1,10 +1,11 @@
 import { createSignal } from "solid-js";
-import RTC from "../lib/rtc";
 import { useAuthState } from "../state/auth";
-import { User } from "../types/user";
+import { useSearchParams } from "@solidjs/router";
+import { authenticateUser } from "../lib/api";
 
 const useAuthForm = () => {
   const { authenticate } = useAuthState();
+  const [query] = useSearchParams();
   const [username, setUsername] = createSignal<string>();
   const [loading, setLoading] = createSignal(false);
   const [error, setError] = createSignal<string>();
@@ -22,20 +23,12 @@ const useAuthForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const sdp = await RTC.getNewSDP();
-      const payload = {
-        username: username(),
-        sdp,
-      };
-
       // make request and authenticate
-      const user: User = {
-        username: username()!,
-        inviteCode: username()?.slice(0, 3) + "0465",
-        referrals: 10,
-      };
-      authenticate(user);
+      const res = await authenticateUser(username()!, query.invite_code);
+
+      authenticate(res);
     } catch (e) {
+      alert("Authentication failed");
     } finally {
       setLoading(false);
     }

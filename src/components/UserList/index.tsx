@@ -1,5 +1,5 @@
 import { TransitionGroup } from "solid-transition-group";
-import { Component, For, createSignal } from "solid-js";
+import { Component, For, createEffect, createSignal } from "solid-js";
 import UserListItem from "../UserListItem";
 import { User } from "../../types/user";
 import Search from "../Search";
@@ -26,6 +26,7 @@ const UserList: Component = () => {
     <>
       <Search onSearch={onSearchHandler} />
       <section class="mt-8 w-full">
+        <h3 class="text-lg">Users</h3>
         <TransitionGroup name="list-item">
           <For each={numList()}>{(user, i) => <UserListItem {...user} />}</For>
         </TransitionGroup>

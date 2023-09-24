@@ -6,7 +6,7 @@
   margin: 0px auto;
   position: relative;
   background: currentColor;
-  color: #fff;
+  color: currentColor;
   box-sizing: border-box;
   animation: animloader 0.4s 0.4s linear infinite alternate;
 }
