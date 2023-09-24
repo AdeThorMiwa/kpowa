@@ -2,45 +2,67 @@ import { TransitionGroup } from "solid-transition-group";
 import {
   Component,
   For,
+  Match,
+  Show,
+  Switch,
   createEffect,
-  createResource,
   createSignal,
+  onCleanup,
 } from "solid-js";
 import UserListItem from "../UserListItem";
-import { User } from "../../types/user";
 import Search from "../Search";
 import { getUsers } from "../../lib/api";
+import { createQuery } from "@tanstack/solid-query";
+import { useAuthState } from "../../state/auth";
+import Loader from "../Loader";
 
 const UserList: Component = () => {
-  const [numList, setNumList] = createSignal<User[]>([
+  const { authenticated } = useAuthState();
+  const [username, setUsername] = createSignal("");
+  const [page, setPage] = createSignal(1);
+
+  const query = createQuery(
+    () => ["users", username(), page()],
+    () => getUsers({ username: username(), page: page() }),
     {
-      username: "Ademide",
-      inviteCode: "Ade1237",
-      referrals: 3,
-    },
-    {
-      username: "Parallax",
-      inviteCode: "Par0824",
-      referrals: 20,
-    },
-  ]);
+      keepPreviousData: true,
+      get enabled() {
+        return authenticated();
+      },
+    }
+  );
 
-  const [users] = createResource(getUsers);
+  createEffect(() => {
+    let listener = (e: Event) => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        if (query.data?.hasNext && !query.isFetching) setPage(page() + 1);
+      }
+    };
 
-  createEffect(() => console.log(users()));
-
-  const onSearchHandler = (searchQuery: string) => {
-    console.log("query is: ", searchQuery);
-  };
+    window.addEventListener("scroll", listener);
+    onCleanup(() => window.removeEventListener("scroll", listener));
+  });
 
   return (
     <>
-      <Search onSearch={onSearchHandler} />
-      <section class="mt-8 w-full">
+      <Search searchString={username()} setSearchString={setUsername} />
+      <section class="mt-8 w-full mb-6">
         <h3 class="text-lg">Users</h3>
-        <TransitionGroup name="list-item">
-          <For each={numList()}>{(user, i) => <UserListItem {...user} />}</For>
-        </TransitionGroup>
+        <Switch>
+          <Match when={query.isError}>Error: {query.error as string}</Match>
+          <Match when={query.isSuccess || query.isFetching}>
+            <TransitionGroup name="list-item">
+              <For each={query.data?.users}>
+                {(user) => <UserListItem {...user} />}
+              </For>
+            </TransitionGroup>
+            <Show when={query.isFetching}>
+              <div class="text-blue-800 flex w-full justify-center my-5">
+                <Loader />
+              </div>
+            </Show>
+          </Match>
+        </Switch>
       </section>
     </>
   );

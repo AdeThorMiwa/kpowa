@@ -11,3 +11,8 @@ export type PaginatedUserList = {
   currentPage: number;
   totalPages: number;
 };
+
+export type GetUserQueryParam = {
+  username?: string;
+  page: number;
+};

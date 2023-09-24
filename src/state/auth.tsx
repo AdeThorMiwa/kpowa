@@ -12,14 +12,9 @@ import EventManager from "../lib/eventManager";
 import { getAuthenticatedUser } from "../lib/api";
 import { makePersisted } from "@solid-primitives/storage";
 import { AUTH_STORAGE_KEY, AUTH_STORAGE_TYPE } from "../constants/auth";
+import { createQuery } from "@tanstack/solid-query";
 
 const AuthContext = createContext<AuthContextProps>();
-
-const fetchUser = async (token: AuthToken) => {
-  if (!token) return;
-
-  return await getAuthenticatedUser();
-};
 
 const AuthProvider: ParentComponent = (props) => {
   const [authToken, setAuthToken] = makePersisted(createSignal<AuthToken>(), {
@@ -27,7 +22,11 @@ const AuthProvider: ParentComponent = (props) => {
     storage: AUTH_STORAGE_TYPE,
   });
   const authenticated = createMemo(() => authToken() !== undefined);
-  const [user] = createResource(authToken, fetchUser);
+  const query = createQuery(() => ["user"], getAuthenticatedUser, {
+    get enabled() {
+      return authToken() !== undefined;
+    },
+  });
 
   createEffect(() => {
     if (authToken()) {
@@ -40,7 +39,7 @@ const AuthProvider: ParentComponent = (props) => {
   };
 
   const values = createMemo<AuthContextProps>(() => ({
-    user,
+    user: () => query.data,
     authenticated,
     authenticate,
   }));

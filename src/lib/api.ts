@@ -1,5 +1,5 @@
 import { AuthToken } from "../types/auth";
-import { PaginatedUserList, User } from "../types/user";
+import { GetUserQueryParam, PaginatedUserList, User } from "../types/user";
 import axiosInstance from "./axios";
 
 export const authenticateUser = async (
@@ -24,7 +24,12 @@ export const getAuthenticatedUser = async (): Promise<User> => {
   return res.data;
 };
 
-export const getUsers = async (): Promise<PaginatedUserList> => {
-  const res = await axiosInstance.get("/users");
+export const getUsers = async ({
+  username,
+  page,
+}: GetUserQueryParam): Promise<PaginatedUserList> => {
+  const res = await axiosInstance.get(
+    `/users?page=${page}${username ? `&username=${username}` : ""}`
+  );
   return res.data;
 };
