@@ -2,22 +2,33 @@ import { Component, Setter, createSignal } from "solid-js";
 import Input from "../../components/Input";
 
 type SearchProps = {
-  searchString: string;
-  setSearchString: Setter<string>;
+  onSubmit: (value: string) => void;
 };
 
 const Search: Component<SearchProps> = (props) => {
-  const searchString = () => props.searchString;
+  const [searchString, setSearchString] = createSignal("");
+  const hasValue = () => searchString().trim().length > 0;
+
+  const onSubmitHandler = (e: Event) => {
+    e.preventDefault();
+    props.onSubmit(searchString().trim());
+  };
 
   return (
-    <div class="mt-4">
+    <form class="mt-4" onSubmit={onSubmitHandler}>
       <Input
         type="search"
         placeholder="Search username.."
         value={searchString()}
-        onInput={(e) => props.setSearchString(e.target.value)}
+        onInput={(e) => setSearchString(e.target.value)}
       />
-    </div>
+      <p
+        class="text-xs text-blue-800 text-right transition-all"
+        classList={{ invisible: !hasValue() }}
+      >
+        Press enter to apply search!
+      </p>
+    </form>
   );
 };
 

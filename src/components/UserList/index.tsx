@@ -22,7 +22,7 @@ const UserList: Component = () => {
   const [page, setPage] = createSignal(1);
 
   const query = createQuery(
-    () => ["users", username(), page()],
+    () => [`users`, username(), page()],
     () => getUsers({ username: username(), page: page() }),
     {
       keepPreviousData: true,
@@ -43,9 +43,13 @@ const UserList: Component = () => {
     onCleanup(() => window.removeEventListener("scroll", listener));
   });
 
+  const onSumbitHandler = (value: string) => {
+    setUsername(value);
+  };
+
   return (
     <>
-      <Search searchString={username()} setSearchString={setUsername} />
+      <Search onSubmit={onSumbitHandler} />
       <section class="mt-8 w-full mb-6">
         <h3 class="text-lg">Users</h3>
         <Switch>
