@@ -5,19 +5,16 @@ import {
   createMemo,
   createResource,
   createSignal,
+  onCleanup,
   useContext,
 } from "solid-js";
 import { AuthContextProps, AuthToken } from "../types/auth";
 import { AppEventManager, EventBus } from "../lib/eventManager";
 import { getAuthenticatedUser } from "../lib/api";
 import { makePersisted } from "@solid-primitives/storage";
-import {
-  APP_EVENTS,
-  AUTH_STORAGE_KEY,
-  AUTH_STORAGE_TYPE,
-} from "../constants/auth";
+import { AUTH_STORAGE_KEY, AUTH_STORAGE_TYPE } from "../constants/auth";
 import { createQuery } from "@tanstack/solid-query";
-import { AppServerEventKind } from "../types/event";
+import { AppServerEventKind, InAppEventKind } from "../types/event";
 
 const AuthContext = createContext<AuthContextProps>();
 
@@ -48,18 +45,24 @@ const AuthProvider: ParentComponent = (props) => {
   });
 
   createEffect(() => {
-    window.addEventListener(APP_EVENTS.LOGOUT, () => logout());
+    const unsubscribe = EventBus.subscribe(InAppEventKind.Logout, () =>
+      logout()
+    );
+
+    onCleanup(() => unsubscribe());
   });
 
   createEffect(() => {
-    EventBus.subscribe<{ referrer: string; referred_user: string }>(
-      AppServerEventKind.NewReferral,
-      (e) => {
-        if (e.data.referrer === query.data?.username) {
-          query.refetch();
-        }
+    const unsubscribe = EventBus.subscribe<{
+      referrer: string;
+      referred_user: string;
+    }>(AppServerEventKind.NewReferral, (e) => {
+      if (e.data?.referrer === query.data?.username) {
+        query.refetch();
       }
-    );
+    });
+
+    onCleanup(() => unsubscribe());
   });
 
   const values = createMemo<AuthContextProps>(() => ({

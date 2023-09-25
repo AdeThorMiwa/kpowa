@@ -1,12 +1,12 @@
 import { TransitionGroup } from "solid-transition-group";
 import {
   Component,
-  For,
   Index,
   Suspense,
   createEffect,
   createResource,
   createSignal,
+  onCleanup,
 } from "solid-js";
 import UserListItem from "../UserListItem";
 import Search from "../Search";
@@ -16,6 +16,7 @@ import Button from "../Button";
 import { EventBus } from "../../lib/eventManager";
 import { AppServerEventKind } from "../../types/event";
 import { User } from "../../types/user";
+import { onNewReferral } from "./handler";
 
 const UserList: Component = () => {
   const [username, setUsername] = createSignal("");
@@ -31,25 +32,23 @@ const UserList: Component = () => {
   const users = () => res()?.users;
 
   createEffect(() => {
-    EventBus.subscribe<{ referrer: string; referred_user: string }>(
+    const unsubscribe = EventBus.subscribe(
       AppServerEventKind.NewReferral,
-      (e) => {
-        mutate((res: any) => ({
-          ...res,
-          users: users()?.map((user: User) => {
-            if (user.username === e.data.referrer)
-              return { ...user, referrals: user.referrals + 1 };
-            else return user;
-          }),
-        }));
-      }
+      (e) => onNewReferral(e, mutate, users)
     );
+
+    onCleanup(() => unsubscribe());
   });
 
   createEffect(() => {
-    EventBus.subscribe<{ data: User }>(AppServerEventKind.NewRegister, (e) => {
-      mutate((res: any) => ({ ...res, users: [e.data, ...res?.users] }));
-    });
+    const unsubscribe = EventBus.subscribe<{ data: User }>(
+      AppServerEventKind.NewRegister,
+      (e) => {
+        mutate((res: any) => ({ ...res, users: [e.data, ...res?.users] }));
+      }
+    );
+
+    onCleanup(() => unsubscribe());
   });
 
   const onSumbitHandler = (value: string) => {
