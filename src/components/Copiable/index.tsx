@@ -1,5 +1,6 @@
 import { Component, createSignal } from "solid-js";
 import cn from "classnames";
+import { toast } from "solid-toast";
 
 type CopiableProps = {
   text: string | undefined;
@@ -19,7 +20,7 @@ const Copiable: Component<CopiableProps> = (props) => {
         setCopied(true);
         setTimeout(() => setCopied(false), 600);
       })
-      .catch(() => alert("Clipboard not available"));
+      .catch(() => toast("Clipboard not available"));
   };
 
   return (

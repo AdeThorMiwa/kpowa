@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js";
 import { useAuthState } from "../state/auth";
 import { authenticateUser } from "../lib/api";
+import toast from "solid-toast";
 
 const useRegister = () => {
   const { authenticate } = useAuthState();
@@ -36,7 +37,7 @@ const useRegister = () => {
 
       authenticate(res);
     } catch (e) {
-      alert("Registration failed");
+      toast.error("Registration failed. Please try again.");
     } finally {
       setLoading(false);
     }
