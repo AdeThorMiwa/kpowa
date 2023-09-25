@@ -8,7 +8,7 @@ const AllowAuthenticated: Component = (props) => {
 
   createEffect(() => {
     if (!authenticated()) {
-      navigate("/auth", { replace: true });
+      navigate("/login", { replace: true });
     }
   });
 

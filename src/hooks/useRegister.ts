@@ -1,22 +1,27 @@
 import { createSignal } from "solid-js";
 import { useAuthState } from "../state/auth";
-import { useSearchParams } from "@solidjs/router";
 import { authenticateUser } from "../lib/api";
 
-const useAuthForm = () => {
+const useRegister = () => {
   const { authenticate } = useAuthState();
-  const [query] = useSearchParams();
-  const [username, setUsername] = createSignal<string>();
+  const [values, setValues] = createSignal({
+    username: "",
+    inviteCode: undefined,
+  });
+
   const [loading, setLoading] = createSignal(false);
-  const [error, setError] = createSignal<string>();
+  const [errors, setErrors] = createSignal({
+    username: "",
+    inviteCode: "",
+  });
 
   const onInputHandler = (
     e: InputEvent & {
       target: HTMLInputElement;
     }
   ) => {
-    setUsername(e.target.value);
-    setError(e.target.validationMessage);
+    setValues({ ...values(), [e.target.name]: e.target.value });
+    setErrors({ ...errors(), [e.target.name]: e.target.validationMessage });
   };
 
   const onFormSubmit = async (e: Event) => {
@@ -24,23 +29,27 @@ const useAuthForm = () => {
     setLoading(true);
     try {
       // make request and authenticate
-      const res = await authenticateUser(username()!, query.invite_code);
+      const res = await authenticateUser(
+        values().username,
+        values().inviteCode
+      );
 
       authenticate(res);
     } catch (e) {
-      alert("Authentication failed");
+      alert("Registration failed");
     } finally {
       setLoading(false);
     }
   };
 
   return {
-    username,
-    error,
+    username: () => values().username,
+    inviteCode: () => values().inviteCode,
+    errors,
     loading,
     onInputHandler,
     onFormSubmit,
   };
 };
 
-export default useAuthForm;
+export default useRegister;

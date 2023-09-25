@@ -1,5 +1,6 @@
 import HomePage from "../pages/Home";
-import AuthPage from "../pages/Auth";
+import RegisterPage from "../pages/Register";
+import LoginPage from "../pages/Login";
 import { Route } from "../types/route";
 
 import AllowAuthenticated from "../guards/AllowAuthenticated";
@@ -12,8 +13,13 @@ const routes: Route<string>[] = [
     guard: AllowAuthenticated,
   },
   {
-    path: "/auth",
-    component: AuthPage,
+    path: "/register",
+    component: RegisterPage,
+    guard: AllowUnauthenticatedOnly,
+  },
+  {
+    path: "/login",
+    component: LoginPage,
     guard: AllowUnauthenticatedOnly,
   },
 ];

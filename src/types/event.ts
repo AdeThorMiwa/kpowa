@@ -1,7 +1,7 @@
 export enum AppServerEventKind {
-  NewLogin,
-  NewRegister,
-  NewReferral,
+  NewLogin = "NewLogin",
+  NewRegister = "NewRegister",
+  NewReferral = "NewReferral",
 }
 
 export type AppServerEvent<T = unknown> = {

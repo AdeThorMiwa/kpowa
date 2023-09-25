@@ -4,11 +4,11 @@ import axiosInstance from "./axios";
 
 export const authenticateUser = async (
   username: string,
-  inviteCode?: string
+  invitationCode?: string
 ): Promise<AuthToken> => {
   const res = await axiosInstance.post(
     "/authenticate",
-    { username, inviteCode },
+    { username, invitationCode },
     {
       headers: {
         "Content-Type": "application/json",

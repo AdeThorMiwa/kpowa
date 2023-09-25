@@ -3,6 +3,7 @@ import {
   Component,
   For,
   Suspense,
+  createEffect,
   createResource,
   createSignal,
 } from "solid-js";
@@ -11,6 +12,8 @@ import Search from "../Search";
 import { getUsers } from "../../lib/api";
 import Loader from "../Loader";
 import Button from "../Button";
+import { EventBus } from "../../lib/eventManager";
+import { AppServerEventKind } from "../../types/event";
 
 const UserList: Component = () => {
   const [username, setUsername] = createSignal("");
@@ -23,6 +26,10 @@ const UserList: Component = () => {
 
   const canNext = () => res()?.hasNext;
   const canPrev = () => res()?.hasPrev;
+
+  // createEffect(() => {
+  //   EventBus.subscribe(AppServerEventKind.)
+  // })
 
   const onSumbitHandler = (value: string) => {
     setUsername(value);

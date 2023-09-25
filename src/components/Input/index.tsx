@@ -1,19 +1,25 @@
-import { Accessor, Component, JSX } from "solid-js";
+import { Component, JSX } from "solid-js";
+import cn from "classnames";
 
 type InputProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
-  error?: Accessor<string | undefined>;
+  error?: string;
 };
 
-const Input: Component<InputProps> = ({ label, error, ...rest }) => {
+const Input: Component<InputProps> = (props) => {
+  const error = () => props.error;
+
   return (
-    <div class="w-full">
-      <label class="block">{label}</label>
+    <div class={cn("w-full", props.class)}>
+      <label class="block">
+        {props.label}
+        {props.required && <sup>*</sup>}
+      </label>
       <input
+        {...props}
         class="w-full border-2 border-gray-400 mt-1.5 px-3 py-1.5 focus:outline-none focus:ring-0 focus:border-blue-800 transition-all duration-300"
-        {...rest}
       />
-      {error && <span class="text-xs text-red-600">{error()}</span>}
+      {props.error && <span class="text-xs text-red-600">{error()}</span>}
     </div>
   );
 };
