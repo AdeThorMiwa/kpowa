@@ -39,7 +39,6 @@ const AuthProvider: ParentComponent = (props) => {
     EventBus.subscribe<{ referrer: string; referred_user: string }>(
       AppServerEventKind.NewReferral,
       (e) => {
-        console.log("updating, ", e);
         if (e.data.referrer === query.data?.username) {
           query.refetch();
         }

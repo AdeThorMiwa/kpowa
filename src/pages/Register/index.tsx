@@ -35,7 +35,6 @@ const RegisterPage: Component = () => {
           name="inviteCode"
           label="Enter invite code"
           placeholder="Invite code"
-          required
           value={inviteCode()}
           onInput={onInputHandler}
           error={errors().inviteCode}

@@ -2,6 +2,7 @@ import { TransitionGroup } from "solid-transition-group";
 import {
   Component,
   For,
+  Index,
   Suspense,
   createEffect,
   createResource,
@@ -14,22 +15,42 @@ import Loader from "../Loader";
 import Button from "../Button";
 import { EventBus } from "../../lib/eventManager";
 import { AppServerEventKind } from "../../types/event";
+import { User } from "../../types/user";
 
 const UserList: Component = () => {
   const [username, setUsername] = createSignal("");
   const [page, setPage] = createSignal(1);
 
-  const [res, { mutate, refetch }] = createResource(
+  const [res, { mutate }] = createResource(
     () => ({ username: username(), page: page() }),
     getUsers
   );
 
   const canNext = () => res()?.hasNext;
   const canPrev = () => res()?.hasPrev;
+  const users = () => res()?.users;
 
-  // createEffect(() => {
-  //   EventBus.subscribe(AppServerEventKind.)
-  // })
+  createEffect(() => {
+    EventBus.subscribe<{ referrer: string; referred_user: string }>(
+      AppServerEventKind.NewReferral,
+      (e) => {
+        mutate((res: any) => ({
+          ...res,
+          users: users()?.map((user: User) => {
+            if (user.username === e.data.referrer)
+              return { ...user, referrals: user.referrals + 1 };
+            else return user;
+          }),
+        }));
+      }
+    );
+  });
+
+  createEffect(() => {
+    EventBus.subscribe<{ data: User }>(AppServerEventKind.NewRegister, (e) => {
+      mutate((res: any) => ({ ...res, users: [e.data, ...res?.users] }));
+    });
+  });
 
   const onSumbitHandler = (value: string) => {
     setUsername(value);
@@ -50,9 +71,9 @@ const UserList: Component = () => {
 
         <Suspense fallback={<ListLoader />}>
           <TransitionGroup name="list-item">
-            <For each={res()?.users}>
-              {(user) => <UserListItem {...user} />}
-            </For>
+            <Index each={users()}>
+              {(user) => <UserListItem {...user()} />}
+            </Index>
           </TransitionGroup>
           <div class="flex mt-8">
             <Button

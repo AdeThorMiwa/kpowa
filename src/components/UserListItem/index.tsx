@@ -8,7 +8,7 @@ const UserListItem: Component<User> = (props) => {
     <article class="flex w-full mt-4">
       <div class="w-12 h-12 border border-blue-800 p-[1px] rounded-md flex justify-center items-center">
         <span class="w-full uppercase h-full bg-blue-800 text-white rounded-md text-xl flex items-center justify-center">
-          {props.username[0]}
+          {props.username && props.username[0]}
         </span>
       </div>
       <div class="ml-4 w-full">
