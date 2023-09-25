@@ -1,4 +1,4 @@
-import { Accessor, Component, JSX, createMemo } from "solid-js";
+import { Accessor, Component, JSX } from "solid-js";
 import cn from "classnames";
 import Loader from "../Loader";
 

@@ -1,9 +1,7 @@
 import { Component } from "solid-js";
 import Input from "../../components/Input";
-import Button from "../../components/Button";
 import useRegister from "../../hooks/useRegister";
 import AuthLayout from "../../layouts/AuthLayout";
-import { A } from "@solidjs/router";
 
 const RegisterPage: Component = () => {
   const {

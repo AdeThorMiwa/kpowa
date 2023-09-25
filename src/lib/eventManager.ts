@@ -1,5 +1,5 @@
 import { AuthToken } from "../types/auth";
-import { EventBusEvent, EventBusEventType } from "../types/event";
+import EventBus from "./eventBus";
 
 const Window = window as any;
 
@@ -24,33 +24,4 @@ class EventManager {
   }
 }
 
-const AppEventManager = new EventManager();
-
-class AppEventBus {
-  public emit(evt: EventBusEvent) {
-    const event = new CustomEvent(evt.type, { detail: evt.data });
-    window.dispatchEvent(event);
-  }
-
-  public subscribe<T = any>(
-    evt: EventBusEventType,
-    handler: (evt: EventBusEvent<T>) => void
-  ) {
-    window.addEventListener(evt, (e: any) =>
-      handler({ data: e.detail, type: evt })
-    );
-
-    return this.unsubscribe(evt, handler);
-  }
-
-  private unsubscribe<T = any>(
-    evt: EventBusEventType,
-    handler: (evt: EventBusEvent<T>) => void
-  ) {
-    return () => window.removeEventListener(evt, (e: any) => handler(e.detail));
-  }
-}
-
-const EventBus = new AppEventBus();
-
-export { EventBus, AppEventManager };
+export default new EventManager();

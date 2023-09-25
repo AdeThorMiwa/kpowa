@@ -1,6 +1,5 @@
 import { Component } from "solid-js";
 import Input from "../../components/Input";
-import Button from "../../components/Button";
 import useLogin from "../../hooks/useLogin";
 import AuthLayout from "../../layouts/AuthLayout";
 

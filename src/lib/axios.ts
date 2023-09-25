@@ -1,7 +1,7 @@
 import axios from "axios";
 import { AUTH_STORAGE_KEY, AUTH_STORAGE_TYPE } from "../constants/auth";
 import { InAppEventKind } from "../types/event";
-import { EventBus } from "./eventManager";
+import EventBus from "./eventBus";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8009",

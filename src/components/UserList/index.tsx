@@ -13,10 +13,10 @@ import Search from "../Search";
 import { getUsers } from "../../lib/api";
 import Loader from "../Loader";
 import Button from "../Button";
-import { EventBus } from "../../lib/eventManager";
 import { AppServerEventKind } from "../../types/event";
 import { User } from "../../types/user";
 import { onNewReferral } from "./handler";
+import EventBus from "../../lib/eventBus";
 
 const UserList: Component = () => {
   const [username, setUsername] = createSignal("");

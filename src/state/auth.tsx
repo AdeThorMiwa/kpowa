@@ -3,18 +3,18 @@ import {
   createContext,
   createEffect,
   createMemo,
-  createResource,
   createSignal,
   onCleanup,
   useContext,
 } from "solid-js";
 import { AuthContextProps, AuthToken } from "../types/auth";
-import { AppEventManager, EventBus } from "../lib/eventManager";
 import { getAuthenticatedUser } from "../lib/api";
 import { makePersisted } from "@solid-primitives/storage";
 import { AUTH_STORAGE_KEY, AUTH_STORAGE_TYPE } from "../constants/auth";
 import { createQuery } from "@tanstack/solid-query";
 import { AppServerEventKind, InAppEventKind } from "../types/event";
+import EventBus from "../lib/eventBus";
+import EventManager from "../lib/eventManager";
 
 const AuthContext = createContext<AuthContextProps>();
 
@@ -40,7 +40,7 @@ const AuthProvider: ParentComponent = (props) => {
 
   createEffect(() => {
     if (authToken()) {
-      AppEventManager.init(authToken());
+      EventManager.init(authToken());
     }
   });
 

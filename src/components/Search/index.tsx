@@ -1,4 +1,4 @@
-import { Component, Setter, createSignal } from "solid-js";
+import { Component, createSignal } from "solid-js";
 import Input from "../../components/Input";
 
 type SearchProps = {
