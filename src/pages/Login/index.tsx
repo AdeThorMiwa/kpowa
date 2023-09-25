@@ -12,6 +12,11 @@ const LoginPage: Component = () => {
       title="Login to get access to our server."
       loading={loading()}
       onSubmit={onFormSubmit}
+      footer={{
+        text: "Don't have an account? ",
+        linkHref: "/register",
+        linkText: "Register",
+      }}
     >
       <Input
         type="text"

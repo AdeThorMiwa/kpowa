@@ -3,6 +3,7 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import useRegister from "../../hooks/useRegister";
 import AuthLayout from "../../layouts/AuthLayout";
+import { A } from "@solidjs/router";
 
 const RegisterPage: Component = () => {
   const {
@@ -19,6 +20,11 @@ const RegisterPage: Component = () => {
       title="Register to get access to our server."
       loading={loading()}
       onSubmit={onFormSubmit}
+      footer={{
+        text: "Already a member? ",
+        linkHref: "/login",
+        linkText: "Login",
+      }}
     >
       <Input
         type="text"

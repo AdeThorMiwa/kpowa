@@ -1,10 +1,18 @@
 import { ParentComponent } from "solid-js";
 import Button from "../../components/Button";
+import { A } from "@solidjs/router";
+
+type Footer = {
+  text: string;
+  linkText: string;
+  linkHref: string;
+};
 
 type AuthLayoutProps = {
   title: string;
   onSubmit: (e: Event) => Promise<void>;
   loading: boolean;
+  footer: Footer;
 };
 
 const AuthLayout: ParentComponent<AuthLayoutProps> = (props) => {
@@ -28,6 +36,12 @@ const AuthLayout: ParentComponent<AuthLayoutProps> = (props) => {
           loading={loading}
         />
       </form>
+      <p class="mt-4 text-sm">
+        {props.footer.text}{" "}
+        <A class="text-blue-800" href={props.footer.linkHref}>
+          {props.footer.linkText}
+        </A>
+      </p>
     </section>
   );
 };

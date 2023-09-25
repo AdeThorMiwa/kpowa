@@ -13,7 +13,7 @@ const Input: Component<InputProps> = (props) => {
     <div class={cn("w-full", props.class)}>
       <label class="block">
         {props.label}
-        {props.required && <sup>*</sup>}
+        {props.required && <sup class="text-red-600">*</sup>}
       </label>
       <input
         {...props}
