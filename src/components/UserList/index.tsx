@@ -79,13 +79,13 @@ const UserList: Component = () => {
               disabled={!canPrev()}
               onClick={() => setPage(page() - 1)}
               text="Prev"
-              class="w-[100px]"
+              class="!w-[100px]"
             />
             <Button
               disabled={!canNext()}
               onClick={() => setPage(page() + 1)}
               text="Next"
-              class="w-[100px] ml-5"
+              class="!w-[100px] ml-5"
             />
           </div>
         </Suspense>

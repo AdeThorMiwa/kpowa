@@ -4,7 +4,7 @@ import EventBus from "./eventBus";
 const Window = window as any;
 
 class EventManager {
-  private readonly eventStreamUrl = "http://localhost:8009/stream";
+  private readonly eventStreamUrl = import.meta.env.VITE_EVENT_STREAM_URL;
   private eventSource: EventSource | undefined;
   private initialized = false;
 

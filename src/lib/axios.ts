@@ -4,7 +4,7 @@ import { InAppEventKind } from "../types/event";
 import EventBus from "./eventBus";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8009",
+  baseURL: import.meta.env.VITE_SERVER_URL,
 });
 
 axiosInstance.interceptors.request.use((config) => {
