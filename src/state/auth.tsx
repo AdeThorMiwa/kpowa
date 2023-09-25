@@ -11,7 +11,11 @@ import { AuthContextProps, AuthToken } from "../types/auth";
 import { AppEventManager, EventBus } from "../lib/eventManager";
 import { getAuthenticatedUser } from "../lib/api";
 import { makePersisted } from "@solid-primitives/storage";
-import { AUTH_STORAGE_KEY, AUTH_STORAGE_TYPE } from "../constants/auth";
+import {
+  APP_EVENTS,
+  AUTH_STORAGE_KEY,
+  AUTH_STORAGE_TYPE,
+} from "../constants/auth";
 import { createQuery } from "@tanstack/solid-query";
 import { AppServerEventKind } from "../types/event";
 
@@ -29,10 +33,22 @@ const AuthProvider: ParentComponent = (props) => {
     },
   });
 
+  const authenticate = (token: AuthToken) => {
+    setAuthToken(token);
+  };
+
+  const logout = () => {
+    setAuthToken(undefined);
+  };
+
   createEffect(() => {
     if (authToken()) {
       AppEventManager.init(authToken());
     }
+  });
+
+  createEffect(() => {
+    window.addEventListener(APP_EVENTS.LOGOUT, () => logout());
   });
 
   createEffect(() => {
@@ -46,14 +62,11 @@ const AuthProvider: ParentComponent = (props) => {
     );
   });
 
-  const authenticate = (token: AuthToken) => {
-    setAuthToken(token);
-  };
-
   const values = createMemo<AuthContextProps>(() => ({
     user: () => query.data,
     authenticated,
     authenticate,
+    logout,
   }));
 
   return (

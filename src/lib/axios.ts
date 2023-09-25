@@ -1,5 +1,9 @@
 import axios from "axios";
-import { AUTH_STORAGE_KEY, AUTH_STORAGE_TYPE } from "../constants/auth";
+import {
+  APP_EVENTS,
+  AUTH_STORAGE_KEY,
+  AUTH_STORAGE_TYPE,
+} from "../constants/auth";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8009",
@@ -17,7 +21,7 @@ axiosInstance.interceptors.response.use(
   (c) => c,
   (error) => {
     if (error.response.status === 401) {
-      AUTH_STORAGE_TYPE.removeItem(AUTH_STORAGE_KEY);
+      window.dispatchEvent(new CustomEvent(APP_EVENTS.LOGOUT));
     }
 
     return Promise.reject(error);
