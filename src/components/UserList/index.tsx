@@ -1,7 +1,7 @@
-import { TransitionGroup } from "solid-transition-group";
 import {
   Component,
   Index,
+  Show,
   Suspense,
   createEffect,
   createResource,
@@ -30,6 +30,7 @@ const UserList: Component = () => {
   const canNext = () => res()?.hasNext;
   const canPrev = () => res()?.hasPrev;
   const users = () => res()?.users;
+  const hasUsers = () => (res()?.users?.length ?? 0) > 0;
 
   createEffect(() => {
     const unsubscribe = EventBus.subscribe(
@@ -69,11 +70,20 @@ const UserList: Component = () => {
         <h3 class="text-lg">Users</h3>
 
         <Suspense fallback={<ListLoader />}>
-          <TransitionGroup name="list-item">
+          <Show
+            when={hasUsers()}
+            fallback={
+              <div class="mt-4">
+                <h3 class="text-blue-800 font-semibold text-center">
+                  Oops, just you on the server :)
+                </h3>
+              </div>
+            }
+          >
             <Index each={users()}>
               {(user) => <UserListItem {...user()} />}
             </Index>
-          </TransitionGroup>
+          </Show>
           <div class="flex mt-8">
             <Button
               disabled={!canPrev()}

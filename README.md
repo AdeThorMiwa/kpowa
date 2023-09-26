@@ -9,14 +9,13 @@ $ yarn install
 
 # add env variables
 $ export VITE_SERVER_URL=http://localhost:8009
-$ export VITE_EVENT_STREAM_URL=http://localhost:8009
+$ export VITE_EVENT_STREAM_URL=http://localhost:8009/stream
 
 # or you can create a .env file from the .env.sample file and put environment variables there
 
 # start the app in dev mode
 $ yarn dev
 ```
-
 
 ### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
 

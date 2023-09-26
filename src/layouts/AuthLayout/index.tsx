@@ -23,10 +23,10 @@ const AuthLayout: ParentComponent<AuthLayoutProps> = (props) => {
       <h1 class="text-2xl font-bold">
         Kill<span class="text-blue-800">powa</span> Server
       </h1>
-      <h4 class="mt-2">{props.title}</h4>
+      <h4 class="mt-2 text-center">{props.title}</h4>
       <form
         onSubmit={props.onSubmit}
-        class="mt-5 w-full max-w-sm flex flex-col"
+        class="mt-5 w-full max-w-sm flex flex-col p-5"
       >
         {props.children}
         <Button

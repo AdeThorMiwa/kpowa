@@ -12,7 +12,7 @@ const UserInfo = () => {
         </span>
       </div>
       <h2 class="mt-2 text-2xl">{user()?.username}</h2>
-      <div class="flex justify-between items-baseline">
+      <div class="flex flex-col justify-between items-baseline md:flex-row">
         <h4 class="text-sm">
           Number of referrals:{" "}
           <b class="text-lg text-blue-800">{user()?.referrals}</b>
