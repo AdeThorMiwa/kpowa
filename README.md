@@ -1,12 +1,22 @@
-## Usage
-
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
-
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+## App Setup
 
 ```bash
-$ npm install # or pnpm install or yarn install
+# clone repo and enter director
+$ git clone https://github.com/AdeThorMiwa/kpowa && cd kpowa
+
+# install dependencies
+$ yarn install
+
+# add env variables
+$ export VITE_SERVER_URL=http://localhost:8009
+$ export VITE_EVENT_STREAM_URL=http://localhost:8009
+
+# or you can create a .env file from the .env.sample file and put environment variables there
+
+# start the app in dev mode
+$ yarn dev
 ```
+
 
 ### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
 

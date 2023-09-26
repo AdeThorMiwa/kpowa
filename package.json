@@ -1,5 +1,5 @@
 {
-  "name": "vite-template-solid",
+  "name": "killpower-client",
   "version": "0.0.0",
   "description": "",
   "scripts": {
@@ -10,7 +10,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/debounce": "^1.2.2",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "autoprefixer": "^10.4.15",
     "eslint": "^8.0.1",
@@ -26,15 +25,11 @@
     "vite-plugin-solid": "^2.7.0"
   },
   "dependencies": {
-    "@solid-primitives/pagination": "^0.2.8",
     "@solid-primitives/storage": "^2.1.1",
     "@solidjs/router": "^0.8.3",
     "@tanstack/solid-query": "^4.35.3",
     "axios": "^1.5.0",
     "classnames": "^2.3.2",
-    "debounce": "^1.2.1",
-    "eventsource": "^2.0.2",
-    "react-intersection-observer": "^9.5.2",
     "solid-js": "^1.7.6",
     "solid-toast": "^0.5.0",
     "solid-transition-group": "^0.2.3"
